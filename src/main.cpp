@@ -3,7 +3,6 @@
  * @brief Main svslicer routine.
  *
  */
-#include <omp.h>
 #include <vtkCellData.h>
 #include <vtkCleanPolyData.h>
 #include <vtkCutter.h>
@@ -368,12 +367,10 @@ int main(int argc, char *argv[])
     std::cout << "Extract slices" << std::endl;
     auto slice_start = std::chrono::high_resolution_clock::now();
     int num_slices_processed = 0;
-#pragma omp parallel for schedule(dynamic)
     for (int i = 0; i < num_centerline_points; i++)
     {
         // Extract thread information
         int my_slice;
-#pragma omp critical(status)
         {
             num_slices_processed++;
             my_slice = num_slices_processed;
